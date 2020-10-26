@@ -30,6 +30,12 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>5.4.22.Final</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.25.2</version>
+        </dependency>
 
     </dependencies>
 </project>
