@@ -27,40 +27,43 @@ import javax.persistence.Persistence;
  * @author DreadsLock
  */
 public class Example {
-    
-    private static EntityManager manager; // Contiene los métodos del contexto de persistencia
-    private static EntityManagerFactory managerFactory;
-    
+
+    private static EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("PersistenciaConfig");
+
     @SuppressWarnings("unchecked")
-    public static void main(String a[]){
-        // Se crea el gestor de persistencia a partir de nuestro contexto
-        managerFactory = Persistence.createEntityManagerFactory("PersistenciaConfig");
-        manager = managerFactory.createEntityManager();
-        
-        
+    public static void main(String a[]) {
         // Creamos un empleado y lo registraremos a la BDs
-       Empleado empleado1 =  new Empleado(10L, 504260647,
-               "Carlos", "Mairena", "Guanacaste, Carrillo, Palmira",
-               new GregorianCalendar(1999, 3, 30).getTime());
-       
-       manager.getTransaction().begin();
-       // Persistimos este objeto y podremos realizar cambios y estos se reflejen en la BD
-       manager.persist(empleado1);
-       manager.getTransaction().commit();
-       
-       mostrarDatos();
+        Empleado empleado1 = new Empleado(10L, 504260647,
+                "Carlos", "Mairena", "Guanacaste, Carrillo, Palmira",
+                new GregorianCalendar(1999, 3, 30).getTime());
+
+        registrarEmpleado(empleado1);
+        mostrarDatos();
+
     }
-    
-    public static void mostrarDatos(){
+
+    public static void registrarEmpleado(Empleado em) {
+        EntityManager manager = managerFactory.createEntityManager();
+        manager.getTransaction().begin();
+        // Persistimos este objeto y podremos realizar cambios y estos se reflejen en la BD
+        manager.persist(em);
+        manager.getTransaction().commit();
+        System.out.println("Empleado registrado...");
+        manager.close();
+    }
+
+    public static void mostrarDatos() {
+        EntityManager manager = managerFactory.createEntityManager();
         // Hacemos una consulta con JPQL
         System.out.println("---------------------");
-        List<Empleado> empleados = (List<Empleado>)manager.createQuery("FROM Empleado").getResultList();
+        List<Empleado> empleados = (List<Empleado>) manager.createQuery("FROM Empleado").getResultList();
         System.out.println("Cantidad de empleados: " + empleados.size());
-        
-        for(Empleado emp: empleados){
+
+        for (Empleado emp : empleados) {
             System.out.println(emp.toString());
         }
         System.out.println("---------------------");
+        manager.close();
     }
 
 }
