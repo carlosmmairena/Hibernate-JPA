@@ -16,6 +16,7 @@
  */
 package dev.runosoftware.main;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,8 +37,30 @@ public class Example {
         managerFactory = Persistence.createEntityManagerFactory("PersistenciaConfig");
         manager = managerFactory.createEntityManager();
         
+        
+        // Creamos un empleado y lo registraremos a la BDs
+       Empleado empleado1 =  new Empleado(10L, 504260647,
+               "Carlos", "Mairena", "Guanacaste, Carrillo, Palmira",
+               new GregorianCalendar(1999, 3, 30).getTime());
+       
+       manager.getTransaction().begin();
+       // Persistimos este objeto y podremos realizar cambios y estos se reflejen en la BD
+       manager.persist(empleado1);
+       manager.getTransaction().commit();
+       
+       mostrarDatos();
+    }
+    
+    public static void mostrarDatos(){
+        // Hacemos una consulta con JPQL
+        System.out.println("---------------------");
         List<Empleado> empleados = (List<Empleado>)manager.createQuery("FROM Empleado").getResultList();
         System.out.println("Cantidad de empleados: " + empleados.size());
+        
+        for(Empleado emp: empleados){
+            System.out.println(emp.toString());
+        }
+        System.out.println("---------------------");
     }
 
 }
