@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 PERSONAL
+ * Copyright (C) 2020 DreadsLock
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,28 @@
  */
 package dev.runosoftware.main;
 
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
  *
- * @author PERSONAL
+ * @author DreadsLock
  */
 public class Example {
     
+    private static EntityManager manager; // Contiene los métodos del contexto de persistencia
+    private static EntityManagerFactory managerFactory;
+    
+    @SuppressWarnings("unchecked")
+    public static void main(String a[]){
+        // Se crea el gestor de persistencia a partir de nuestro contexto
+        managerFactory = Persistence.createEntityManagerFactory("PersistenciaConfig");
+        manager = managerFactory.createEntityManager();
+        
+        List<Empleado> empleados = (List<Empleado>)manager.createQuery("FROM Empleado").getResultList();
+        System.out.println("Cantidad de empleados: " + empleados.size());
+    }
+
 }
