@@ -17,7 +17,7 @@
 package dev.runosoftware.main;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,13 +52,13 @@ public class Empleado implements Serializable {
     private String direccion;
     
     @Column(name = "FECHA_NACIMIENTO")   
-    private Date   fechaNacimiento;
+    private LocalDate   fechaNacimiento;
     
     public Empleado(){
         // Bean requerido por Hibernate
     }
 
-    public Empleado(Long id ,int cedula, String nombre, String apellido, String direccion, Date fechaNacimiento) {
+    public Empleado(Long id ,int cedula, String nombre, String apellido, String direccion, LocalDate fechaNacimiento) {
         this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
@@ -107,11 +107,11 @@ public class Empleado implements Serializable {
         this.direccion = direccion;
     }
 
-    public Date getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

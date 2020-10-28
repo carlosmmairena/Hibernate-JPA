@@ -16,6 +16,8 @@
  */
 package dev.runosoftware.main;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -35,7 +37,7 @@ public class Example {
         // Creamos un empleado y lo registraremos a la BDs
         Empleado empleado1 = new Empleado(10L, 504260647,
                 "Carlos", "Mairena", "Guanacaste, Carrillo, Palmira",
-                new GregorianCalendar(1999, 3, 30).getTime());
+               LocalDate.of(1999, Month.MARCH, 30));
 
         registrarEmpleado(empleado1);
         mostrarDatos();
