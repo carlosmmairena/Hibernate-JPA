@@ -39,6 +39,24 @@ public class Example {
 
         registrarEmpleado(empleado1);
         mostrarDatos();
+        
+        EntityManager manager = managerFactory.createEntityManager();
+        manager.getTransaction().begin();
+        empleado1 = manager.merge(empleado1);
+        empleado1.setNombre("Luisa");
+        manager.getTransaction().commit();
+        manager.close();
+        
+        mostrarDatos();
+        
+        System.out.println("Eliminando empleado de la BD");
+        EntityManager manager2 = managerFactory.createEntityManager();
+        manager2.getTransaction().begin();
+        empleado1 = manager2.merge(empleado1);
+        manager2.remove(empleado1);
+        manager2.getTransaction().commit();
+        manager2.close();
+        mostrarDatos();
 
     }
 
