@@ -16,9 +16,11 @@
  */
 package dev.runosoftware.main;
 
+import dev.runosoftware.entities.Empleado;
+import dev.runosoftware.entities.Ocupacion;
+import dev.runosoftware.entities.SeguroCCSS;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,26 +40,33 @@ public class Example {
         Empleado empleado1 = new Empleado(10L, 504260647,
                 "Carlos", "Mairena", "Guanacaste, Carrillo, Palmira",
                LocalDate.of(1999, Month.MARCH, 30));
-
+        
+        Empleado empleado2 = new Empleado(20L, 504260647,
+                "Nelson", "Mairena", "Palmira",
+               LocalDate.of(2003, Month.MAY, 30));
+        
         registrarEmpleado(empleado1);
+        registrarEmpleado(empleado2);
         mostrarDatos();
         
-        EntityManager manager = managerFactory.createEntityManager();
-        manager.getTransaction().begin();
-        empleado1 = manager.merge(empleado1);
-        empleado1.setNombre("Luisa");
-        manager.getTransaction().commit();
-        manager.close();
-        
-        mostrarDatos();
-        
-        System.out.println("Eliminando empleado de la BD");
+        EntityManager manager1 = managerFactory.createEntityManager();
         EntityManager manager2 = managerFactory.createEntityManager();
+        
+        manager1.getTransaction().begin();
         manager2.getTransaction().begin();
-        empleado1 = manager2.merge(empleado1);
-        manager2.remove(empleado1);
+        
+        empleado1 = manager1.merge(empleado1);
+        empleado2 = manager2.merge(empleado2);
+        
+        empleado1.setSeguroCaja(new SeguroCCSS(30L, 9685, LocalDate.now(), 47900));
+        empleado2.setSeguroCaja(new SeguroCCSS(35L, 9685, LocalDate.now(), 47900));
+        
+        manager1.getTransaction().commit();
         manager2.getTransaction().commit();
+
+        manager1.close();
         manager2.close();
+        
         mostrarDatos();
 
     }

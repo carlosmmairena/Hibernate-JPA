@@ -14,14 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package dev.runosoftware.main;
+package dev.runosoftware.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import javax.persistence.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -52,13 +55,18 @@ public class Empleado implements Serializable {
     private String direccion;
     
     @Column(name = "FECHA_NACIMIENTO")   
-    private LocalDate   fechaNacimiento;
+    private LocalDate  fechaNacimiento;
+    
+    // Realizamos una modificacion en cascada para todas las acciones
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "COD_SEGURO")
+    private SeguroCCSS seguroCaja;
     
     public Empleado(){
         // Bean requerido por Hibernate
     }
 
-    public Empleado(Long id ,int cedula, String nombre, String apellido, String direccion, LocalDate fechaNacimiento) {
+    public Empleado(Long id, int cedula, String nombre, String apellido, String direccion, LocalDate fechaNacimiento) {
         this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
@@ -74,7 +82,7 @@ public class Empleado implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public int getCedula() {
         return cedula;
     }
@@ -115,9 +123,17 @@ public class Empleado implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public SeguroCCSS getSeguroCaja() {
+        return seguroCaja;
+    }
+
+    public void setSeguroCaja(SeguroCCSS seguroCaja) {
+        this.seguroCaja = seguroCaja;
+    }
+
     @Override
     public String toString() {
-        return "EmpleadoM{" + "id=" + id + ", cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion=" + direccion + ", fechaNacimiento=" + fechaNacimiento + '}';
+        return "Empleado{" + "id=" + id + ", cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion=" + direccion + ", fechaNacimiento=" + fechaNacimiento + ", seguroCaja=" + seguroCaja + '}';
     }
     
 }
