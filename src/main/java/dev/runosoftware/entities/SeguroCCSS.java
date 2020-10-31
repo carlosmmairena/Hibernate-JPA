@@ -20,7 +20,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -45,6 +47,14 @@ public class SeguroCCSS implements Serializable {
 
     @Column(name = "MONTO_SEGURO")
     private float    montoSeguro;
+    
+    /* 
+        Ahora necesitamos hacer de forma bidireccional la relacion de 1 a 1,
+        esto para que si obtenemos los datos del seguro, podamos tener los datos del
+        empleado que tiene el actual seguro que estamos visualizando.
+    */
+    @OneToOne(mappedBy = "seguroCaja", fetch = FetchType.LAZY)
+    private Empleado empleado;
 
     public SeguroCCSS() {
     }
@@ -87,10 +97,23 @@ public class SeguroCCSS implements Serializable {
     public void setMontoSeguro(float montoSeguro) {
         this.montoSeguro = montoSeguro;
     }
+    
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+        this.empleado.setSeguroCaja(this);
+    }
 
     @Override
     public String toString() {
-        return "SeguroCCSS{" + "id=" + id + ", numSeguro=" + numSeguro + ", fechaIngreso=" + fechaIngreso + ", montoSeguro=" + montoSeguro + '}';
+        return "SeguroCCSS{" + "id=" + id +
+                ", numSeguro=" + numSeguro + 
+                ", fechaIngreso=" + fechaIngreso + 
+                ", montoSeguro=" + montoSeguro + 
+                ", Empleado=" + empleado.getCedula() + '}';
     }
     
 }

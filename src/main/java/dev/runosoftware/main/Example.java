@@ -31,7 +31,7 @@ import javax.persistence.Persistence;
  */
 public class Example {
 
-    private static EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("PersistenciaConfig");
+    private static final EntityManagerFactory MF = Persistence.createEntityManagerFactory("PersistenciaConfig");
 
     @SuppressWarnings("unchecked")
     public static void main(String a[]) {
@@ -40,22 +40,25 @@ public class Example {
                 "Carlos", "Mairena", "Guanacaste, Carrillo, Palmira",
                LocalDate.of(1999, Month.MARCH, 30));
         
-        Empleado empleado2 = new Empleado(20L, 504260647,
+        Empleado empleado2 = new Empleado(20L, 404260748,
                 "Nelson", "Mairena", "Palmira",
                LocalDate.of(2003, Month.MAY, 30));
         
         registrarEmpleado(empleado1);
         registrarEmpleado(empleado2);
-        mostrarDatos();
         
-        EntityManager manager = managerFactory.createEntityManager();
+        EntityManager manager = MF.createEntityManager();
         manager.getTransaction().begin();
         
         empleado1 = manager.merge(empleado1);
         empleado2 = manager.merge(empleado2);
         
-        empleado1.setSeguroCaja(new SeguroCCSS(30L, 9685, LocalDate.now(), 47900));
-        empleado2.setSeguroCaja(new SeguroCCSS(35L, 9685, LocalDate.now(), 47900));
+        //  Con la relacion bidireccional, podemos crear el seguro y luego añadirle el empleado.
+        SeguroCCSS seguro1 = new SeguroCCSS(30L, 9685, LocalDate.now(), 447900);
+        seguro1.setEmpleado(empleado1);
+        
+        // En este caso se mantiene igual, ya que una relacion unidireccional
+        empleado2.setSeguroCaja(new SeguroCCSS(35L, 9685, LocalDate.now(), 847500));
         
         manager.getTransaction().commit();
         manager.close();
@@ -64,7 +67,7 @@ public class Example {
     }
 
     public static void registrarEmpleado(Empleado em) {
-        EntityManager manager = managerFactory.createEntityManager();
+        EntityManager manager = MF.createEntityManager();
         manager.getTransaction().begin();
         // Persistimos este objeto y podremos realizar cambios y estos se reflejen en la BD
         manager.persist(em);
@@ -74,17 +77,18 @@ public class Example {
     }
 
     public static void mostrarDatos() {
-        EntityManager manager = managerFactory.createEntityManager();
+        EntityManager manager = MF.createEntityManager();
         // Hacemos una consulta con JPQL
         System.out.println("---------------------");
-        List<Empleado> empleados = (List<Empleado>) manager.createQuery("FROM Empleado").getResultList();
-        System.out.println("Cantidad de empleados: " + empleados.size());
+        List<SeguroCCSS> seguros = (List<SeguroCCSS>) manager.createQuery("FROM SeguroCCSS").getResultList();
+        manager.close();
+        System.out.println("Cantidad de empleados: " + seguros.size());
 
-        for (Empleado emp : empleados) {
+        for (SeguroCCSS emp : seguros) {
             System.out.println(emp.toString());
         }
         System.out.println("---------------------");
-        manager.close();
+        //manager.close();
     }
 
 }
