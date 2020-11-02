@@ -77,6 +77,46 @@ public class Ocupacion implements Serializable {
     public void setEmpleados(List<Empleado> empleados) {
         this.empleados = empleados;
     }
+    
+    /**
+     * Permite añadir un empleado a esta ocupacion,<br/>
+     * si ya está añadido retornará false
+     * @param empleado
+     * @return boolean
+     */
+    public boolean addEmpleado(Empleado empleado){
+        if (empleado != null) {
+            if (!empleados.contains(empleado)){
+                empleados.add(empleado);
+                empleado.setOcupacion(this);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Permite remover un empleado a esta ocupacion,<br/>
+     * si no estaba añadido entonces retornará false
+     * @param empleado
+     * @return boolean
+     */
+    public boolean removeEmpleado(Empleado empleado){
+        if (empleado != null) {
+            if (empleados.contains(empleado)){
+                empleados.remove(empleado);
+                empleado.setOcupacion(null);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public String toString() {
