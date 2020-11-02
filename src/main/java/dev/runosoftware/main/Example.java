@@ -17,6 +17,7 @@
 package dev.runosoftware.main;
 
 import dev.runosoftware.entities.Empleado;
+import dev.runosoftware.entities.Ocupacion;
 import dev.runosoftware.entities.SeguroCCSS;
 import java.time.LocalDate;
 import java.time.Month;
@@ -35,60 +36,85 @@ public class Example {
 
     @SuppressWarnings("unchecked")
     public static void main(String a[]) {
-        // Creamos un empleado y lo registraremos a la BDs
-        Empleado empleado1 = new Empleado(10L, 504260647,
-                "Carlos", "Mairena", "Guanacaste, Carrillo, Palmira",
-               LocalDate.of(1999, Month.MARCH, 30));
         
-        Empleado empleado2 = new Empleado(20L, 404260748,
-                "Nelson", "Mairena", "Palmira",
-               LocalDate.of(2003, Month.MAY, 30));
+        Ocupacion ocupacion1 = new Ocupacion(1L, "Contador Público", 693410);
+        Ocupacion ocupacion2 = new Ocupacion(2L, "Cocinera", 589000);
+        Ocupacion ocupacion3 = new Ocupacion(3L, "Operario de Maquinaria", 625000);
+        Ocupacion ocupacion4 = new Ocupacion(4L, "Electricista", 693012);
+        Ocupacion ocupacion5 = new Ocupacion(5L, "Peón Agrícola", 485900);
         
-        registrarEmpleado(empleado1);
-        registrarEmpleado(empleado2);
+        System.out.println("Ocupaciones creadas.");
         
         EntityManager manager = MF.createEntityManager();
         manager.getTransaction().begin();
         
-        empleado1 = manager.merge(empleado1);
-        empleado2 = manager.merge(empleado2);
-        
-        //  Con la relacion bidireccional, podemos crear el seguro y luego añadirle el empleado.
-        SeguroCCSS seguro1 = new SeguroCCSS(30L, 9685, LocalDate.now(), 447900);
-        seguro1.setEmpleado(empleado1);
-        
-        // En este caso se mantiene igual, ya que una relacion unidireccional
-        empleado2.setSeguroCaja(new SeguroCCSS(35L, 9685, LocalDate.now(), 847500));
+        manager.persist(ocupacion1);
+        manager.persist(ocupacion2);
+        manager.persist(ocupacion3);
+        manager.persist(ocupacion4);
+        manager.persist(ocupacion5);
+        System.out.println("Puestos de trabajo creados.");
         
         manager.getTransaction().commit();
         manager.close();
+        
+        
+        EntityManager manager2 = MF.createEntityManager();
+        manager2.getTransaction().begin();
+        
+        System.out.println("Se crean los empleados.");
+        Empleado empleado1 = new Empleado(
+                1L, 504260647, "Carlos", "Mairena",
+                "Costa Rica, Guanacaste, Liberia",
+                LocalDate.of(1999, Month.MARCH, 30));
+        
+        Empleado empleado2 = new Empleado(
+                2L, 48522, "Rodrigo", "Vidal",
+                "Costa Rica, Guanacaste, Liberia",
+                LocalDate.of(1998, Month.JANUARY, 11));
+        
+        System.out.println("Se le asigna el puesto de trabajo al empleado1");
+        empleado1.setOcupacion(ocupacion3);
+
+        System.out.println("Se le asigna el puesto de trabajo al empleado2");
+        empleado2.setOcupacion(ocupacion3);
+        
+        System.out.println("Se le asigna el seguro de trabajador al empleado1");
+        empleado1.setSeguroCaja(
+                new SeguroCCSS(1L, 1252478, LocalDate.now(), 42000));
+       
+        System.out.println("Se le asigna el seguro de trabajador al empleado2");
+        empleado2.setSeguroCaja(
+                new SeguroCCSS(4L, 478525, LocalDate.now(), 42400));
+        
+        System.out.println("Se persisten los empleados con sus datos completos.");
+        manager2.persist(empleado1);
+        manager2.persist(empleado2);
+        
+        manager2.getTransaction().commit();
+        manager2.close();
+        
         mostrarDatos();
-
+        
+        System.out.println("Finalización del programa");
     }
-
-    public static void registrarEmpleado(Empleado em) {
-        EntityManager manager = MF.createEntityManager();
-        manager.getTransaction().begin();
-        // Persistimos este objeto y podremos realizar cambios y estos se reflejen en la BD
-        manager.persist(em);
-        manager.getTransaction().commit();
-        System.out.println("Empleado registrado...");
-        manager.close();
-    }
-
+    
+    
     public static void mostrarDatos() {
         EntityManager manager = MF.createEntityManager();
-        // Hacemos una consulta con JPQL
-        System.out.println("---------------------");
-        List<SeguroCCSS> seguros = (List<SeguroCCSS>) manager.createQuery("FROM SeguroCCSS").getResultList();
+        manager.getTransaction().begin();
+        
+        Ocupacion ocupacion = manager.find(Ocupacion.class, 3L);
+        List<Empleado> empleados = ocupacion.getEmpleados();
         manager.close();
-        System.out.println("Cantidad de empleados: " + seguros.size());
-
-        for (SeguroCCSS emp : seguros) {
-            System.out.println(emp.toString());
-        }
+        
         System.out.println("---------------------");
-        //manager.close();
+        
+        for(Empleado emplea: empleados){
+            System.out.println(emplea);
+        }
+        
+        System.out.println("---------------------");
     }
 
 }
