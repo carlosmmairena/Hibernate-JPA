@@ -18,9 +18,6 @@ package dev.runosoftware.main;
 
 import dev.runosoftware.entities.Empleado;
 import dev.runosoftware.entities.Ocupacion;
-import dev.runosoftware.entities.SeguroCCSS;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -39,12 +36,9 @@ public class Example {
         
         EntityManager manager = MF.createEntityManager();
         manager.getTransaction().begin();
-        
         Ocupacion ocupacion = manager.find(Ocupacion.class, 1L);
-        ocupacion.addEmpleado(new Empleado(10L, 89558, "Paula",
-                "Martínez", "Costa Rica, Guancaste, Santa Cruz",
-                LocalDate.of(15, Month.NOVEMBER, 10)));
-        
+        //ocupacion = manager.merge(ocupacion);
+        manager.remove(ocupacion);
         manager.getTransaction().commit();
         manager.close();
         
@@ -56,17 +50,11 @@ public class Example {
     
     public static void mostrarDatos() {
         EntityManager manager = MF.createEntityManager();
-        manager.getTransaction().begin();
         
         Ocupacion ocupacion = manager.find(Ocupacion.class, 1L);
-        List<Empleado> empleados = ocupacion.getEmpleados();
         manager.close();
         
-        System.out.println("---------------------");
-        
-        for(Empleado emplea: empleados){
-            System.out.println(emplea);
-        }
+        System.out.println("Ocupacion: " + ocupacion);
         
         System.out.println("---------------------");
     }

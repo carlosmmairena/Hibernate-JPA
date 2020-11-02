@@ -34,7 +34,7 @@ public class Ocupacion implements Serializable {
 
     // Relacion de Uno a Muchos
     @OneToMany(mappedBy = "ocupacion", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY, orphanRemoval = true)
     List<Empleado> empleados = new ArrayList<Empleado>();
 
     public Ocupacion() {

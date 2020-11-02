@@ -53,7 +53,7 @@ public class SeguroCCSS implements Serializable {
         esto para que si obtenemos los datos del seguro, podamos tener los datos del
         empleado que tiene el actual seguro que estamos visualizando.
     */
-    @OneToOne(mappedBy = "seguroCaja", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "seguroCaja", fetch = FetchType.LAZY, orphanRemoval = true)
     private Empleado empleado;
 
     public SeguroCCSS() {
