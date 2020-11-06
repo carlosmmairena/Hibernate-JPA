@@ -18,13 +18,14 @@ package dev.runosoftware.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 import javax.persistence.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -36,7 +37,8 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "Empleado")
+@Table(name = "EMPLEADO")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Empleado implements Serializable {
     
     private static final long serialVersionUID = 1L; // Requerido para Serializar
@@ -62,12 +64,12 @@ public class Empleado implements Serializable {
     
     // Realizamos una modificacion en cascada para todas las acciones
     @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "COD_SEGURO")
+    @JoinColumn(name = "COD_SEGURO", nullable = false)
     private SeguroCCSS seguroCaja;
     
     // Realizamos la relación de muchos a uno.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "COD_OCUPACION")
+    @JoinColumn(name = "COD_OCUPACION", nullable = false)
     private Ocupacion ocupacion;
     
     public Empleado(){
@@ -145,47 +147,6 @@ public class Empleado implements Serializable {
 
     public void setOcupacion(Ocupacion ocupacion) {
         this.ocupacion = ocupacion;
-    }
-
-    @Override
-    public String toString() {
-        return "Empleado{" + "id=" + id + 
-                ", cedula=" + cedula + 
-                ", nombre=" + nombre + 
-                ", apellido=" + apellido + 
-                ", direccion=" + direccion + 
-                ", fechaNacimiento=" + fechaNacimiento + 
-                ", seguroCaja=" + seguroCaja + 
-                ocupacion + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.id);
-        hash = 53 * hash + this.cedula;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Empleado other = (Empleado) obj;
-        if (this.cedula != other.cedula) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
     }
     
 }

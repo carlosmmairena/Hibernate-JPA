@@ -3,16 +3,17 @@
   <persistence-unit name="PersistenciaConfig">
     <!-- Se representan las clases -->
     <class>dev.runosoftware.entities.Empleado</class>
+    <class>dev.runosoftware.entities.Desarrollador</class>
     <class>segurdev.runosoftware.entities.SeguroCCSS</class>
     <class>ocupadev.runosoftware.entities.Ocupacion</class>
     
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-      <property name="javax.persistence.jdbc.url" value="jdbc:h2:./DATABASE/BDPlanilla"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:./Database/BDPlanilla"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>
       <property name="javax.persistence.jdbc.password" value=""/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-      <property name="hibernate.hbm2ddl.auto" value="validate"/>
+      <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
     </properties>
   </persistence-unit>
 </persistence>
