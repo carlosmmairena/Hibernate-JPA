@@ -23,6 +23,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -44,6 +46,7 @@ public class Empleado implements Serializable {
     private static final long serialVersionUID = 1L; // Requerido para Serializar
     
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "COD_EMPLEADO")
     private Long   id;
     
@@ -76,8 +79,7 @@ public class Empleado implements Serializable {
         // Bean requerido por Hibernate
     }
 
-    public Empleado(Long id, int cedula, String nombre, String apellido, String direccion, LocalDate fechaNacimiento) {
-        this.id = id;
+    public Empleado(int cedula, String nombre, String apellido, String direccion, LocalDate fechaNacimiento) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;

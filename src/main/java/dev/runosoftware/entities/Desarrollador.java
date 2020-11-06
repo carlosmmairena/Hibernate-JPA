@@ -24,10 +24,10 @@ public class Desarrollador extends Empleado {
         super();
     }
 
-    public Desarrollador(Long id, int cedula, String nombre, String apellido, String direccion,
+    public Desarrollador(int cedula, String nombre, String apellido, String direccion,
             LocalDate fechaNacimiento, String habilidad, boolean activo) {
 
-        super(id, cedula, nombre, apellido, direccion, fechaNacimiento);
+        super(cedula, nombre, apellido, direccion, fechaNacimiento);
         this.habilidad = habilidad;
         this.activo = activo;
     }

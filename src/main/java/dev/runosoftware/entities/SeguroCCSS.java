@@ -21,6 +21,8 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,6 +38,7 @@ public class SeguroCCSS implements Serializable {
     private static final long serialVersionUID = 3L; // Requerido para Serializar
     
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "COD_SEGURO")
     private Long   id;
     
@@ -59,8 +62,7 @@ public class SeguroCCSS implements Serializable {
     public SeguroCCSS() {
     }
 
-    public SeguroCCSS(Long id, int numSeguro, LocalDate fechaIngreso, float montoSeguro) {
-        this.id = id;
+    public SeguroCCSS(int numSeguro, LocalDate fechaIngreso, float montoSeguro) {
         this.numSeguro = numSeguro;
         this.fechaIngreso = fechaIngreso;
         this.montoSeguro = montoSeguro;

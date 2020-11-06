@@ -40,19 +40,19 @@ public class Example {
         
         System.out.println("************** Registrando desarrollador...");
 
-        Ocupacion ocupacion1 = new Ocupacion(1L, "Programador nivel 1", 569000);
+        Ocupacion ocupacion1 = new Ocupacion("Programador nivel 1", 569000);
         
-        Desarrollador dev1 = new Desarrollador(3L, 504260647, "Carlos", "Mairena", "Guancaste, Carrillo",
+        Desarrollador dev1 = new Desarrollador(504260647, "Carlos", "Mairena", "Guancaste, Carrillo",
         LocalDate.of(1999, Month.MARCH, 30), "Kubernetes", true);
 
-        Desarrollador dev2 = new Desarrollador(4L, 504260647, "Paula", "Rodríguez", "Guancaste, Carrillo",
+        Desarrollador dev2 = new Desarrollador(504260647, "Paula", "Rodríguez", "Guancaste, Carrillo",
         LocalDate.of(1999, Month.MARCH, 30), "Web Developer", true);
 
         dev1.setOcupacion(ocupacion1);
         dev2.setOcupacion(ocupacion1);
 
-        dev2.setSeguroCaja(new SeguroCCSS(25l, 7852466, LocalDate.now(), 58400));
-        dev1.setSeguroCaja(new SeguroCCSS(105L, 585278552, LocalDate.now(), 89300));
+        dev2.setSeguroCaja(new SeguroCCSS(7852466, LocalDate.now(), 58400));
+        dev1.setSeguroCaja(new SeguroCCSS(585278552, LocalDate.now(), 89300));
 
         EntityManager manager = MF.createEntityManager();
         manager.getTransaction().begin();

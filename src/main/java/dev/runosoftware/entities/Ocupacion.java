@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,6 +25,7 @@ public class Ocupacion implements Serializable {
     private static final long serialVersionUID = 2L; // Requerido para Serializar
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "COD_OCUPACION")
     private Long   id;
 
@@ -40,8 +43,7 @@ public class Ocupacion implements Serializable {
     public Ocupacion() {
     }
 
-    public Ocupacion(Long id, String puesto, float salario) {
-        this.id = id;
+    public Ocupacion(String puesto, float salario) {
         this.puesto = puesto;
         this.salario = salario;
     }
